@@ -63,9 +63,9 @@ class UserService {
     }
   }
 
-  public async getUsersByGroupName(name: string): Promise<UserDocument[]> {
+  public async getUsersByGroup(id: string): Promise<UserDocument[]> {
     try {
-      const group = await GroupModel.findOne({ name: name });
+      const group = await GroupModel.findOne({ _id: id });
       if (group) {
         const users = await UserModel.find({ groups: group._id });
         return users;

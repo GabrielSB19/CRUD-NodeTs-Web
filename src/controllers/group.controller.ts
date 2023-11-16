@@ -64,9 +64,7 @@ class GroupController {
 
   public async getGroupsByUser(req: Request, res: Response): Promise<Response> {
     try {
-      const groupRecords = await groupService.getGroupsByUserName(
-        req.body.name
-      );
+      const groupRecords = await groupService.getGroupsByUser(req.params.id);
       if (!groupRecords) {
         return res.status(404).json({ message: "Group not found" });
       }

@@ -91,7 +91,7 @@ class UserController {
 
   public async getUsersByGroup(req: Request, res: Response): Promise<Response> {
     try {
-      const userRecords = await userService.getUsersByGroupName(req.body.name);
+      const userRecords = await userService.getUsersByGroup(req.params.id);
       return res.status(200).json(userRecords);
     } catch (error) {
       return res.status(500).json({ error: error });

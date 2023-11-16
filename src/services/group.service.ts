@@ -94,7 +94,6 @@ class GroupService {
     idUser: string
   ): Promise<GroupDocument | null> {
     try {
-      console.log(idGroup, idUser);
       const user = await UserModel.findOne({ _id: idUser });
       if (!user) throw new Error("User not found");
       const group = await GroupModel.findOne({ _id: idGroup });
@@ -104,11 +103,9 @@ class GroupService {
         throw new Error("User not found in group");
 
       user.groups = user.groups?.filter((g) => {
-        console.log(g.toString(), idGroup);
         return g.toString() !== idGroup;
       });
       group.users = group.users.filter((u) => {
-        console.log(u.toString(), idUser);
         return u.toString() !== idUser;
       });
 
@@ -121,21 +118,17 @@ class GroupService {
     }
   }
 
-  public async getUsersByGroupName(nameGroup: string): Promise<UserInput[]> {
+  public async getGroupsByUser(id: string): Promise<GroupDocument[]> {
     try {
-      const groups = await GroupModel.findOne({ name: nameGroup });
-      if (!groups) throw new Error("Group not found");
-      return await UserModel.find({ groups: groups._id });
-    } catch (error) {
-      throw error;
-    }
-  }
+      const user = await UserModel.findOne({ _id: id });
+      if (user) {
+        const groups = await GroupModel.find({ users: user?._id }).populate(
+          "users"
+        );
 
-  public async getGroupsByUserName(nameUser: string): Promise<GroupInput[]> {
-    try {
-      const users = await UserModel.findOne({ name: nameUser });
-      if (!users) throw new Error("User not found");
-      return await GroupModel.find({ users: users._id });
+        return groups;
+      }
+      return [];
     } catch (error) {
       throw error;
     }

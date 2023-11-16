@@ -27,7 +27,6 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
 
     const decoded = jwt.verify(token, secret);
     req.body.logged = decoded;
-    console.log("Decode Token" + req.body.logged);
     next();
   } catch (error) {
     return res.status(500).json({ message: error });
@@ -44,7 +43,6 @@ const isTokenValid = (token: string): boolean => {
 };
 
 const generateToken = (user: UserDocument) => {
-  console.log("Generate Token");
   try {
     const token = jwt.sign(
       { email: user.email, role: user.role, timeExp: currentTime + 3600 },
