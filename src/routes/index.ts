@@ -18,6 +18,21 @@ const routes = (app: Express) => {
   app.put("/users/:id", userController.update);
 
   app.delete("/users/:id", userController.delete);
+
+  app.post("/groups", groupController.create);
+
+  app.post("/groups/:idGroup/:idUser", groupController.addUsersToGroup);
+  app.delete("/groups/:idGroup/:idUser", groupController.removeUsersFromGroup);
+
+  app.get("/groups", groupController.getAll);
+  app.get("/groups/:id", groupController.getOne);
+
+  app.put("/groups/:id", groupController.update);
+
+  app.delete("/groups/:id", groupController.delete);
+
+  app.get("/groups/:id/users", userController.getUsersByGroup);
+  app.get("/users/:id/groups", groupController.getGroupsByUser);
 };
 
 export default routes;
