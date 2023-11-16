@@ -1,9 +1,15 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { UserDocument } from "../models/user.model";
 
 dotenv.config();
+
+interface JwtPayload {
+  email: string;
+  role: string;
+  timeExp: number;
+}
 
 const secret = process.env.JWT_SECRET || "";
 const currentTime = Math.floor(Date.now() / 1000);
@@ -51,8 +57,8 @@ const generateToken = (user: UserDocument) => {
   }
 };
 
-const hasRole = (role: string) => {
-  (req: Request, res: Response, next: NextFunction) => {
+const hasRole =
+  (role: string) => (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Not logged in" });
@@ -61,7 +67,7 @@ const hasRole = (role: string) => {
       if (err) {
         return res.status(401).json({ message: err.message });
       }
-      if (!isJwtPayload(decoded) || role !== "admin") {
+      if (!isJwtPayload(decoded) || role !== decoded.role) {
         return res.status(403).json({
           message:
             "You do not have the authorization and permissions to access this resource.",
@@ -71,9 +77,8 @@ const hasRole = (role: string) => {
       next();
     });
   };
-};
 
-const isJwtPayload = (decoded: any) => {
+const isJwtPayload = (decoded: any): decoded is JwtPayload => {
   return decoded && typeof decoded === "object" && "role" in decoded;
 };
 
