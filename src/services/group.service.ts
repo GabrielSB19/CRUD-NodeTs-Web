@@ -1,7 +1,16 @@
 import GroupModel, { GroupInput, GroupDocument } from "../models/group.model";
 import UserModel, { UserInput } from "../models/user.model";
 
+/**
+ * Servicio que encapsula la lógica de negocio relacionada con los grupos.
+ */
 class GroupService {
+  /**
+   * Crea un nuevo grupo en la base de datos.
+   * @param groupInput - Datos del grupo a crear.
+   * @returns Promise<GroupDocument> - Documento del grupo creado.
+   * @throws Error si hay un problema al crear el grupo.
+   */
   public async create(groupInput: GroupInput): Promise<GroupDocument> {
     try {
       const groupRecord = await GroupModel.create(groupInput);
@@ -11,6 +20,11 @@ class GroupService {
     }
   }
 
+  /**
+   * Obtiene todos los grupos almacenados en la base de datos.
+   * @returns Promise<GroupDocument[]> - Lista de documentos de grupo.
+   * @throws Error si hay un problema al recuperar los grupos.
+   */
   public async findAll(): Promise<GroupDocument[]> {
     try {
       const groupRecords = await GroupModel.find();
@@ -20,6 +34,12 @@ class GroupService {
     }
   }
 
+  /**
+   * Obtiene un grupo por su ID.
+   * @param id - ID del grupo a buscar.
+   * @returns Promise<GroupDocument | null> - Documento del grupo encontrado o null si no existe.
+   * @throws Error si hay un problema al buscar el grupo.
+   */
   public async findOne(id: string): Promise<GroupDocument | null> {
     try {
       const group = await GroupModel.findById(id);
@@ -29,6 +49,12 @@ class GroupService {
     }
   }
 
+  /**
+   * Obtiene un grupo por su nombre.
+   * @param name - Nombre del grupo a buscar.
+   * @returns Promise<GroupDocument | null> - Documento del grupo encontrado o null si no existe.
+   * @throws Error si hay un problema al buscar el grupo.
+   */
   public async findByName(name: string): Promise<GroupDocument | null> {
     try {
       const group = await GroupModel.findOne({ name: name });
@@ -38,6 +64,13 @@ class GroupService {
     }
   }
 
+  /**
+   * Actualiza un grupo por su ID.
+   * @param id - ID del grupo a actualizar.
+   * @param groupInput - Datos actualizados del grupo.
+   * @returns Promise<GroupDocument | null> - Documento del grupo actualizado o null si no existe.
+   * @throws Error si hay un problema al actualizar el grupo.
+   */
   public async update(
     id: string,
     groupInput: GroupInput
@@ -54,6 +87,12 @@ class GroupService {
     }
   }
 
+  /**
+   * Elimina un grupo por su ID.
+   * @param id - ID del grupo a eliminar.
+   * @returns Promise<GroupDocument | null> - Documento del grupo eliminado o null si no existe.
+   * @throws Error si hay un problema al eliminar el grupo.
+   */
   public async delete(id: string): Promise<GroupDocument | null> {
     try {
       const groupRecord = await GroupModel.findByIdAndDelete(id);
@@ -63,6 +102,13 @@ class GroupService {
     }
   }
 
+  /**
+   * Agrega un usuario a un grupo por sus IDs.
+   * @param groupId - ID del grupo al que se va a agregar el usuario.
+   * @param userId - ID del usuario que se va a agregar al grupo.
+   * @returns Promise<GroupDocument | null> - Documento del grupo actualizado o null si no existe.
+   * @throws Error si hay un problema al agregar el usuario al grupo.
+   */
   public async addUserToGroup(
     groupId: string,
     useId: string
@@ -89,6 +135,13 @@ class GroupService {
     }
   }
 
+  /**
+   * Elimina un usuario de un grupo por sus IDs.
+   * @param groupId - ID del grupo del que se va a eliminar el usuario.
+   * @param userId - ID del usuario que se va a eliminar del grupo.
+   * @returns Promise<GroupDocument | null> - Documento del grupo actualizado o null si no existe.
+   * @throws Error si hay un problema al eliminar el usuario del grupo.
+   */
   public async removeUserFromGroup(
     idGroup: string,
     idUser: string
@@ -118,6 +171,12 @@ class GroupService {
     }
   }
 
+  /**
+   * Obtiene todos los grupos a los que pertenece un usuario por su ID.
+   * @param userId - ID del usuario.
+   * @returns Promise<GroupDocument[]> - Lista de documentos de grupos asociados al usuario.
+   * @throws Error si hay un problema al buscar los grupos por usuario.
+   */
   public async getGroupsByUser(id: string): Promise<GroupDocument[]> {
     try {
       const user = await UserModel.findOne({ _id: id });

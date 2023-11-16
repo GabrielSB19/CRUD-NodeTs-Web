@@ -3,7 +3,16 @@ import groupService from "../services/group.service";
 import { GroupDocument } from "../models/group.model";
 import userService from "../services/user.service";
 
+/**
+ * Controlador que maneja las operaciones relacionadas con los grupos.
+ */
 class GroupController {
+  /**
+   * Crea un nuevo grupo.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el grupo creado.
+   */
   public async create(req: Request, res: Response): Promise<Response> {
     try {
       const groupExis = await groupService.findByName(req.body.name);
@@ -17,6 +26,12 @@ class GroupController {
     }
   }
 
+  /**
+   * Obtiene todos los grupos.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye la lista de grupos.
+   */
   public async getAll(req: Request, res: Response): Promise<Response> {
     try {
       const groupRecords = await groupService.findAll();
@@ -26,6 +41,12 @@ class GroupController {
     }
   }
 
+  /**
+   * Obtiene un grupo por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el grupo encontrado.
+   */
   public async getOne(req: Request, res: Response): Promise<Response> {
     try {
       const groupRecord = await groupService.findOne(req.params.id);
@@ -38,6 +59,12 @@ class GroupController {
     }
   }
 
+  /**
+   * Actualiza un grupo por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el grupo actualizado.
+   */
   public async update(req: Request, res: Response): Promise<Response> {
     try {
       const groupRecord = await groupService.update(req.params.id, req.body);
@@ -50,6 +77,12 @@ class GroupController {
     }
   }
 
+  /**
+   * Elimina un grupo por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el grupo eliminado.
+   */
   public async delete(req: Request, res: Response): Promise<Response> {
     try {
       const groupRecord = await groupService.delete(req.params.id);
@@ -62,6 +95,12 @@ class GroupController {
     }
   }
 
+  /**
+   * Obtiene todos los grupos a los que pertenece un usuario por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye la lista de grupos del usuario.
+   */
   public async getGroupsByUser(req: Request, res: Response): Promise<Response> {
     try {
       const groupRecords = await groupService.getGroupsByUser(req.params.id);
@@ -74,6 +113,12 @@ class GroupController {
     }
   }
 
+  /**
+   * Agrega usuarios a un grupo por sus ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el grupo actualizado.
+   */
   public async addUsersToGroup(req: Request, res: Response): Promise<Response> {
     try {
       const user = await userService.findOne(req.params.idUser);
@@ -93,6 +138,12 @@ class GroupController {
     }
   }
 
+  /**
+   * Elimina usuarios de un grupo por sus ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el grupo actualizado.
+   */
   public async removeUsersFromGroup(
     req: Request,
     res: Response

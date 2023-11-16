@@ -4,7 +4,16 @@ import authServices from "../middleware/auth";
 import { UserDocument } from "../models/user.model";
 import bcrypt from "bcrypt";
 
+/**
+ * Controlador que maneja las operaciones relacionadas con los usuarios.
+ */
 class UserController {
+  /**
+   * Autentica a un usuario utilizando credenciales proporcionadas.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el token de autenticación.
+   */
   public async login(req: Request, res: Response): Promise<Response> {
     try {
       const user: UserDocument | null = await userService.findByEmail(
@@ -30,6 +39,12 @@ class UserController {
     }
   }
 
+  /**
+   * Crea un nuevo usuario.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el usuario creado.
+   */
   public async create(req: Request, res: Response): Promise<Response> {
     try {
       const userExists = await userService.findByEmail(req.body.email);
@@ -44,6 +59,12 @@ class UserController {
     }
   }
 
+  /**
+   * Obtiene todos los usuarios.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye la lista de usuarios.
+   */
   public async findAll(req: Request, res: Response): Promise<Response> {
     try {
       const userRecords = await userService.findAll();
@@ -53,6 +74,12 @@ class UserController {
     }
   }
 
+  /**
+   * Obtiene un usuario por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el usuario encontrado.
+   */
   public async findOne(req: Request, res: Response): Promise<Response> {
     try {
       const userRecord = await userService.findOne(req.params.id);
@@ -65,6 +92,12 @@ class UserController {
     }
   }
 
+  /**
+   * Actualiza un usuario por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el usuario actualizado.
+   */
   public async update(req: Request, res: Response): Promise<Response> {
     try {
       const userRecord = await userService.update(req.params.id, req.body);
@@ -77,6 +110,12 @@ class UserController {
     }
   }
 
+  /**
+   * Elimina un usuario por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye el usuario eliminado.
+   */
   public async delete(req: Request, res: Response): Promise<Response> {
     try {
       const userRecord = await userService.delete(req.params.id);
@@ -89,6 +128,12 @@ class UserController {
     }
   }
 
+  /**
+   * Obtiene todos los usuarios pertenecientes a un grupo por su ID.
+   * @param req - Objeto de solicitud.
+   * @param res - Objeto de respuesta.
+   * @returns Promise<Response> - Respuesta JSON que incluye la lista de usuarios del grupo.
+   */
   public async getUsersByGroup(req: Request, res: Response): Promise<Response> {
     try {
       const userRecords = await userService.getUsersByGroup(req.params.id);
